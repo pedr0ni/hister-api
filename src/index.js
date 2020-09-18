@@ -1,9 +1,9 @@
-const express     = require('express')
-const consign     = require('consign')
-const cors        = require('cors')
-const compression = require('compression')
-const helmet      = require('helmet')
-const database    = require('./database')
+const express      = require('express')
+const consign      = require('consign')
+const cors         = require('cors')
+const compression  = require('compression')
+const helmet       = require('helmet')
+const database     = require('./database')
 
 const app = express()
 

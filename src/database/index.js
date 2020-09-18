@@ -1,10 +1,8 @@
-const config    = require('./config')
-const Sequelize = require('sequelize')
+const mongoose = require('mongoose')
 
-const database = new Sequelize(config)
+mongoose.connect('mongodb+srv://root:66ve1t9t1qoKEDRh@violaveiculos.f3jfi.gcp.mongodb.net/Hister?retryWrites=true&w=majority', {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+})
 
-const User     = require('../models/User')
-
-User.init(database)
-
-module.exports = database
+module.exports = mongoose
