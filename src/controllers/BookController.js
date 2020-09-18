@@ -6,7 +6,11 @@ const Category = require('../models/Category')
 const router = express.Router()
 
 router.get('/', async (req, res) => {
+    const { skip, take } = req.query
+
     const books = await Book.find()
+        .skip(parseInt(skip))
+        .limit(parseInt(take))
 
     return res.json(books)
 })
