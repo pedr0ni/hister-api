@@ -1,4 +1,6 @@
-const encrypt = require('js-sha256')
+const jwt = require('jsonwebtoken')
+const authenticationConfig = require('../config/authentication.json')
+const bcrypt = require('bcryptjs')
 
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
@@ -7,8 +9,21 @@ let randomInteger = (min, max) => {
 }
 
 module.exports = {
-    hash: (value) => {
-        return encrypt(value)
+
+    generateJwt: (identifier, expiration) => {
+        return jwt.sign({ userId: identifier }, authenticationConfig.secret, {
+            expiresIn: expiration
+        })
+    },
+
+    validateJwt: (token, callback) => {
+        return jwt.verify(token, authenticationConfig.secret, (err, decoded) => {
+            callback(err, decoded)
+        })
+    },
+
+    compareHash: async (hash, hashToCompare) => {
+        return await bcrypt.compare(hash, hashToCompare)
     },
 
     randomString: (length) => {

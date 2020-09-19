@@ -5,6 +5,8 @@ const Category = require('../models/Category')
 
 const router = express.Router()
 
+router.use(require('../middlewares/AuthenticationMiddleware'))
+
 router.get('/', async (req, res) => {
     const { skip, take } = req.query
 
