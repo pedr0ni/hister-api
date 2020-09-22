@@ -1,4 +1,3 @@
-const Security = require('../services/Security')
 const security = require('../services/Security')
 
 module.exports = (req, res, next) => {

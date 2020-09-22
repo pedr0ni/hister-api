@@ -37,7 +37,8 @@ const BookSchema = new mongoose.Schema({
         type: String
     },
     category: {
-        type: Object
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
     },
     createdAt: {
         type: Date,

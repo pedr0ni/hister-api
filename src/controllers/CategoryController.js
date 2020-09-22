@@ -4,6 +4,8 @@ const Category = require('../models/Category')
 
 const router = express.Router()
 
+router.use(require('../middlewares/AuthenticationMiddleware'))
+
 router.get('/', async (req, res) => {
     const categories = await Category.find()
 
@@ -15,6 +17,5 @@ router.post('/', async (req, res) => {
 
     return res.json(category)
 })
-
 
 module.exports = app => app.use('/category', router)

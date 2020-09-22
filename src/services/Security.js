@@ -22,8 +22,8 @@ module.exports = {
         })
     },
 
-    compareHash: async (hash, hashToCompare) => {
-        return await bcrypt.compare(hash, hashToCompare)
+    compareHash: (hash, hashToCompare) => {
+        return bcrypt.compare(hash, hashToCompare)
     },
 
     randomString: (length) => {

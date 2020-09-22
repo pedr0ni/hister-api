@@ -13,10 +13,10 @@ router.post('/authenticate', async (req, res) => {
         const user = await User.findOne({ email }).select('+password')
     
         if (!user)
-            return res.status(404).json({ error: `Usuário com o email ${email} não encontrado.` })
+            return res.status(404).json({ message: `Usuário com o email ${email} não encontrado.` })
     
-        if (!security.compareHash(password, user.password))
-            return res.status(401).json({ error: 'Email ou senha incorreto(s)'})
+        if (!await security.compareHash(password, user.password))
+            return res.status(401).json({ message: 'Email ou senha incorreto(s)...'})
 
         user.password = undefined
 
@@ -24,11 +24,11 @@ router.post('/authenticate', async (req, res) => {
         
         return res.json({user, token})
     } catch (exception) {
-        return res.status(400).json(exception)
+        return res.status(500).json(exception)
     }
 })
 
-router.post('/create', async (req, res) => {
+router.post('/register', async (req, res) => {
     const { email } = req.body
 
     if (await User.findOne({ email }))
