@@ -1,4 +1,5 @@
 const express = require('express')
+const assert = require('assert')
 
 const Book = require('../models/Book')
 const Category = require('../models/Category')
@@ -20,15 +21,15 @@ router.get('/', async (req, res) => {
                 $regex: search
             }
         }
-        const pages = Math.floor(search ? await Book.find(query).countDocuments() : await Book.countDocuments() / take)
+        const pages = Math.floor(search ? await Book.find(query).countDocuments() / take : await Book.countDocuments() / take)
 
         const books = await Book.find(search ? query : {})
-        .skip(skip)
-        .limit(take)
-        .sort({
-            title: 'asc'
-        })
-        .populate('category')
+            .skip(skip)
+            .limit(take)
+            .sort({
+                title: 'asc'
+            })
+            .populate('category')
 
         return res.json({books, pagination: {
             page, pages, results: books.length
@@ -38,10 +39,26 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.post('/', async (req, res) => {
+    try {
+        const book = await Book.create(req.body)
+
+        return res.json(book)
+    } catch (exception) {
+        return res.status(500).json(exception)
+    }
+})
+
 router.get('/:bookId', async (req, res) => {
     try {
         const { bookId } = req.params
-        const book = await Book.findById(bookId).populate('category')
+        if (bookId.length < 24) {
+            return res.status(400).json({
+                message: `${bookId} não pode ser convertido em ObjectID`
+            })
+        }
+        
+        const book = await Book.findById(bookId)
 
         if (!book)
             return res.status(404).json({
@@ -73,6 +90,7 @@ router.get('/category/:category', async (req, res) => {
 router.delete('/:bookId', async (req, res) => {
     try {
         const { bookId } = req.params
+
         const book = await Book.findById(bookId)
         if (!book)
             return res.status(404).json({ error: `O livro com id ${bookId} não foi encontrado.` })
