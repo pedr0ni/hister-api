@@ -73,16 +73,27 @@ router.get('/:bookId', async (req, res) => {
 
 router.get('/category/:category', async (req, res) => {
     try {
+        let { page = 0 } = req.query
         const category = await Category.findById(req.params.category)
 
-        console.log(category)
+        page = parseInt(page)
+        const skip = page * 10
+        const pages = Math.floor(await Book.find({category}).countDocuments() / 10)
 
-        const books = await Book.find({
-            category: category
-        })
+        const books = await Book
+            .find({category})
+            .skip(skip)
+            .limit(10)
+            .sort({
+                title: 'asc'
+            })
+            .populate('category')
 
-        return res.json(books)
+        return res.json({books, pagination: {
+            page, pages, results: books.length
+        }})
     } catch (exception) {
+        console.error(exception)
         return res.status(500).json(exception)
     }
 })
