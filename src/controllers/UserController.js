@@ -6,6 +6,21 @@ const User = require('../models/User')
 
 const router = express.Router()
 
+router.use('/info', require('../middlewares/AuthenticationMiddleware'))
+
+router.get('/info', async (req, res) => {
+    try {
+        const user = await User.findById(req.userId)
+        if (!user)
+            return res.status(404).json({message: 'Usuário não encontrado.'})
+
+        return res.json(user)
+
+    } catch (exception) {
+        return res.status(500).json(exception)
+    }
+})
+
 router.post('/authenticate', async (req, res) => {
     try {
         const { email, password } = req.body
@@ -29,16 +44,20 @@ router.post('/authenticate', async (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
-    const { email } = req.body
+    try {
+        const { email } = req.body
 
-    if (await User.findOne({ email }))
-        return res.status(400).json({error: `User with email ${email} already exists.`})
+        if (await User.findOne({ email }))
+            return res.status(400).json({message: `O usuário com email ${email} já existe!`})
 
-    const user = await User.create(req.body)
+        const user = await User.create(req.body)
 
-    user.password = undefined // Hide password in response
+        user.password = undefined // Hide password in response
 
-    return res.json(user)
+        return res.json(user)
+    } catch (exception) {
+        return res.status(500).json(exception)
+    }
 })
 
 

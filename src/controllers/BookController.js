@@ -78,7 +78,8 @@ router.get('/category/:category', async (req, res) => {
 
         page = parseInt(page)
         const skip = page * 10
-        const pages = Math.floor(await Book.find({category}).countDocuments() / 10)
+        let totalResults = await Book.find({category}).countDocuments()
+        const pages = Math.floor(totalResults / 10)
 
         const books = await Book
             .find({category})
@@ -90,7 +91,7 @@ router.get('/category/:category', async (req, res) => {
             .populate('category')
 
         return res.json({books, pagination: {
-            page, pages, results: books.length
+            page, pages, results: totalResults
         }})
     } catch (exception) {
         console.error(exception)
