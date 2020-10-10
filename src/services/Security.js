@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const authenticationConfig = require('../config/authentication.json')
 const bcrypt = require('bcryptjs')
 
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -11,14 +10,20 @@ let randomInteger = (min, max) => {
 module.exports = {
 
     generateJwt: (identifier, expiration) => {
-        return jwt.sign({ userId: identifier }, authenticationConfig.secret, {
+        return jwt.sign({ userId: identifier }, process.env.SECRET, {
             expiresIn: expiration
         })
     },
 
-    validateJwt: (token, callback) => {
-        return jwt.verify(token, authenticationConfig.secret, (err, decoded) => {
-            callback(err, decoded)
+    validateJwt: (token) => {
+
+        return new Promise((resolve, reject) => {
+            jwt.verify(token, process.env.SECRET, (err, decoded) => {
+                if (err)
+                    reject(err)
+                else
+                    resolve(decoded)
+            })
         })
     },
 

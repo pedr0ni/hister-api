@@ -1,27 +1,29 @@
 const security = require('../services/Security')
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
 
     const { authorization } = req.headers
 
     if (!authorization)
-        return res.status(401).json({ error: 'No authorization header provided.'})
+        return res.status(401).json({ message: 'No authorization header provided.'})
 
     const parts = authorization.split(' ')
 
     if (parts.length != 2)
-        return res.status(401).json({ error: 'Malformed authorization header.'})
+        return res.status(401).json({ message: 'Malformed authorization header.'})
 
     const [ scheme, token ] = parts
 
     if (!/^Bearer$/i.test(scheme))
-        return res.status(401).json({ error: 'Malformed bearer token.'})
+        return res.status(401).json({ message: 'Malformed bearer token.'})
 
-    security.validateJwt(token, (err, decoded) => {
-        if (err) return res.status(401).json({ error: 'Invalid token provided.'})
+    
+    const parsedToken = await security.validateJwt(token)
 
-        req.userId = decoded.userId
-
+    if (parsedToken) {
+        req.userId = parsedToken.userId
         return next()
-    })
+    }
+    
+    return res.status(401).json({ error: 'Invalid token provided.'})
 }
