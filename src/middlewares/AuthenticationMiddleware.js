@@ -18,12 +18,14 @@ module.exports = async (req, res, next) => {
         return res.status(401).json({ message: 'Malformed bearer token.'})
 
     
-    const parsedToken = await security.validateJwt(token)
+    try {
+        const parsedToken = await security.validateJwt(token)
 
-    if (parsedToken) {
-        req.userId = parsedToken.userId
-        return next()
+        if (parsedToken) {
+            req.userId = parsedToken.userId
+            return next()
+        }
+    } catch (exception) {
+        return res.status(401).json({ message: 'The provided token is invalid or it already expired.'})
     }
-    
-    return res.status(401).json({ error: 'Invalid token provided.'})
 }

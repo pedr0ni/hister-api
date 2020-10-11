@@ -14,6 +14,4 @@ factory.dropUsers = async () => {
     await User.deleteMany({})
 }
 
-factory.app = require('../src/app')
-
 module.exports = factory

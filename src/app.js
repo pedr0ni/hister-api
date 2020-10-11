@@ -22,4 +22,8 @@ consign()
     .include('src/controllers')
     .into(app)
 
+app.disconnect = async () => {
+    await database.disconnect()
+}
+
 module.exports = app

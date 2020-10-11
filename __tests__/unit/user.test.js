@@ -1,7 +1,4 @@
-const User = require("../../src/models/User")
-
 const Factory = require('../Factory')
-
 
 describe('User', () => {
 
