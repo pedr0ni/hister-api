@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon --watch src src/index.js --ignore __tests__",
-    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles"
+    "test": "NODE_ENV=test jest"
   },
   "author": "M. Pedroni",
   "license": "ISC",
