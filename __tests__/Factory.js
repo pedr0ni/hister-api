@@ -1,5 +1,6 @@
 const { factory } = require('factory-girl')
 const faker       = require('faker')
+const Category = require('../src/models/Category')
 const User        = require('../src/models/User')
 
 factory.define('User', User, {
@@ -12,6 +13,10 @@ factory.define('User', User, {
 
 factory.dropUsers = async () => {
     await User.deleteMany({})
+}
+
+factory.dropCategory = async () => {
+    await Category.deleteMany({})
 }
 
 module.exports = factory
