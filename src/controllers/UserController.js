@@ -1,21 +1,15 @@
 const express = require('express')
-const jwt = require('jsonwebtoken')
 const security = require('../services/Security')
 
 const User = require('../models/User')
 
 const router = express.Router()
 
-router.use('/info', require('../middlewares/AuthenticationMiddleware'))
-
-router.get('/info', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const user = await User.findById(req.userId)
-        if (!user)
-            return res.status(404).json({message: 'Usuário não encontrado.'})
-
-        return res.json(user)
-
+       const users = await User.find({})
+       
+       return res.json(users)
     } catch (exception) {
         return res.status(500).json(exception)
     }
@@ -60,5 +54,32 @@ router.post('/register', async (req, res) => {
     }
 })
 
+router.use(require('../middlewares/AuthenticationMiddleware'))
+
+router.get('/info', async (req, res) => {
+    try {
+        const user = await User.findById(req.userId)
+        if (!user)
+            return res.status(404).json({message: 'Usuário não encontrado.'})
+
+        return res.json(user)
+
+    } catch (exception) {
+        return res.status(500).json(exception)
+    }
+})
+
+router.get('/info/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        if (!user)
+            return res.status(404).json({message: 'Usuário não encontrado.'})
+
+        return res.json(user)
+
+    } catch (exception) {
+        return res.status(500).json(exception)
+    }
+})
 
 module.exports = app => app.use('/user', router)
