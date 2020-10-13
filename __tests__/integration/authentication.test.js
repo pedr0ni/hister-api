@@ -1,13 +1,12 @@
 const Factory = require('../Factory')
 const faker = require('faker')
 const request = require('supertest')
-const app = require('../../src/app')
 
 describe('Authentication', () => {
 
     it('Should be able to register a new user', async () => {
       
-        const response = await request(app).post('/user/register').send({
+        const response = await request(Factory.getApp()).post('/user/register').send({
             name: faker.name.findName(),
             email: faker.internet.email(),
             password: faker.internet.password(),
@@ -17,25 +16,42 @@ describe('Authentication', () => {
         expect(response.status).toBe(200)
     })
 
+    it('Should not be able to register an existing email', async () => {
+        const user = await Factory.getUser()
+
+        const response = await request(Factory.getApp()).post('/user/register').send({
+            name: faker.name.findName(),
+            email: user.email,
+            password: faker.internet.password(),
+            birth: faker.date.past()
+        })
+
+        expect(response.status).toBe(400)
+    })
+
     it('Should be able to authenticate with a valid user', async () => {
 
         const password = '123'
-        const user = await Factory.create('User', {
+        const user = await Factory.getUser({
             password
         })
 
-        const response = await request(app).post('/user/authenticate').send({
+        console.log(user, password)
+
+        const response = await request(Factory.getApp()).post('/user/authenticate').send({
             email: user.email,
             password
         })
+
+        console.log(response.body)
 
         expect(response.status).toBe(200)
     })
 
     it('Should not be able to login with a invalid email', async () => {
-        const user = await Factory.create('User')
+        const user = await Factory.getUser()
 
-        const response = await request(app).post('/user/authenticate').send({
+        const response = await request(Factory.getApp()).post('/user/authenticate').send({
             email: 'invalid+email@gmail.com',
             password: user.password
         })
@@ -44,9 +60,9 @@ describe('Authentication', () => {
     })
 
     it('Should not be able to login with a invalid password', async () => {
-        const user = await Factory.create('User')
+        const user = await Factory.getUser()
 
-        const response = await request(app).post('/user/authenticate').send({
+        const response = await request(Factory.getApp()).post('/user/authenticate').send({
             email: user.email,
             password: 'invalid-password'
         })
@@ -55,7 +71,7 @@ describe('Authentication', () => {
     })
 
     afterAll(async () => {
-        await app.disconnect()
+        await Factory.destroy()
     })
     
 })

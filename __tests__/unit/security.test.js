@@ -1,5 +1,4 @@
 const Security = require('../../src/services/Security')
-const Factory = require('../Factory')
 const moment = require('moment')
 
 describe('Security', () => {
@@ -17,8 +16,10 @@ describe('Security', () => {
         expect(isAfter).toBeTruthy()
     })
 
-    afterAll(async () => {
-        await Factory.dropUsers()
+    it('Should generate a random string', () => {
+        const string = Security.randomString(10)
+
+        expect(string).toHaveLength(10)
     })
 
 })

@@ -1,22 +1,32 @@
-const { factory } = require('factory-girl')
 const faker       = require('faker')
 const Category = require('../src/models/Category')
 const User        = require('../src/models/User')
+const app = require('../src/app')
 
-factory.define('User', User, {
-    name: faker.name.findName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-    birth: faker.date.past(),
-    createdAt: faker.date.past()
+require('dotenv').config({
+    path: process.env.NODE_ENV == 'test' ? '.env.test' : '.env'
 })
 
-factory.dropUsers = async () => {
-    await User.deleteMany({})
+module.exports = {
+    async drop() {
+        await User.deleteMany({})
+        await Category.deleteMany({})
+    },
+    async getUser(params = {}) {
+        return await User.create({
+            name: params.name ? params.name : faker.name.findName(),
+            email: params.email ? params.email : faker.internet.email(),
+            birth: params.birth ? params.birth : faker.date.past(),
+            password: params.password ? params.password : faker.internet.password()
+        })
+    },
+    getApp() {
+        return app
+    },
+    async destroy() {
+        console.log('[Factory] Bye...')
+        await User.deleteMany({})
+        await app.disconnect()
+        console.log('[Factory] Dead!')
+    }
 }
-
-factory.dropCategory = async () => {
-    await Category.deleteMany({})
-}
-
-module.exports = factory

@@ -1,7 +1,6 @@
-const app = require('../../src/app')
 const faker = require('faker')
 const request = require('supertest')
-const factory = require('../Factory')
+const Factory = require('../Factory')
 
 describe('Category', () => {
 
@@ -9,7 +8,7 @@ describe('Category', () => {
 
         const name = faker.name.title()
 
-        const response = await request(app).post('/category').send({
+        const response = await request(Factory.getApp()).post('/category').send({
             name,
             index: 1,
             image: 'No image'
@@ -22,15 +21,14 @@ describe('Category', () => {
     })
 
     it('Should list all categories', async () => {
-        const response = await request(app).get('/category').send({})
+        const response = await request(Factory.getApp()).get('/category').send({})
 
         expect(response.status).toBe(200)
         expect(response.body.length).toBeGreaterThanOrEqual(1)
     })
 
     afterAll(async () => {
-        await factory.dropCategory()
-        await app.disconnect()
+        await Factory.destroy()
     })
 
 })

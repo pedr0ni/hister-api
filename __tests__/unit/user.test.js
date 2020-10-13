@@ -4,7 +4,7 @@ describe('User', () => {
 
     it('User password should be hashed', async () => {
         let password = 'Abc3219@'
-        const user = await Factory.create('User', {
+        const user = await Factory.getUser({
             password
         })
 
@@ -12,7 +12,7 @@ describe('User', () => {
     })
 
     afterAll(async () => {
-        await Factory.dropUsers()
+        await Factory.destroy()
     })
 
 })

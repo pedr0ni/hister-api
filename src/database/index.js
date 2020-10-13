@@ -1,7 +1,3 @@
-require('dotenv').config({
-    path: process.env.NODE_ENV == 'test' ? '.env.test' : '.env'
-})
-
 const mongoose = require('mongoose')
 
 mongoose.connect(`mongodb+srv://root:66ve1t9t1qoKEDRh@violaveiculos.f3jfi.gcp.mongodb.net/${process.env.DATABASE}?retryWrites=true&w=majority`, {
