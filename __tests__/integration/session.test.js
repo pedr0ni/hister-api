@@ -7,28 +7,28 @@ const Factory = require('../Factory')
 describe('Session', () => {
 
     it('Should not authorize a request with no auth header provided', async () => {
-        const response = await request(app).get('/user/info').send({})
+        const response = await request(app).get('/test/locked').send({})
 
         expect(response.status).toBe(401)
         expect(response.body).toHaveProperty('message')
     })
 
     it('Should not authorize a request with a malformed auth header', async () => {
-        const response = await request(app).get('/user/info').set('Authorization', 'Bearer').send({})
+        const response = await request(app).get('/test/locked').set('Authorization', 'Bearer').send({})
 
         expect(response.status).toBe(401)
         expect(response.body).toHaveProperty('message')
     })
 
     it('Should not authorize a request with a malformed Bearer token', async () => {
-        const response = await request(app).get('/user/info').set('Authorization', 'Token 123').send({})
+        const response = await request(app).get('/test/locked').set('Authorization', 'Token 123').send({})
 
         expect(response.status).toBe(401)
         expect(response.body).toHaveProperty('message')
     })
 
     it('Should not authorize a request with a invalid Bearer token', async () => {
-        const response = await request(app).get('/user/info').set('Authorization', 'Bearer 123').send({})
+        const response = await request(app).get('/test/locked').set('Authorization', 'Bearer 123').send({})
 
         expect(response.status).toBe(401)
         expect(response.body).toHaveProperty('message')
@@ -39,10 +39,10 @@ describe('Session', () => {
 
         const token = await Security.generateJwt(user._id, 300)
 
-        const response = await request(app).get('/user/info').set('Authorization', `Bearer ${token}`).send({})
+        const response = await request(app).get('/test/locked').set('Authorization', `Bearer ${token}`).send({})
 
         expect(response.status).toBe(200)
-        expect(response.body._id).toBe(user.id)
+        expect(response.body.userId).toBe(user.id)
     })
 
     afterAll(async () => {

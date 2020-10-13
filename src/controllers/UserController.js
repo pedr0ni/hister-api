@@ -69,7 +69,7 @@ router.get('/info', async (req, res) => {
     }
 })
 
-router.get('/info/:id', async (req, res) => {
+router.get('/infoById/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
         if (!user)
