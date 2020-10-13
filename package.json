@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon --watch src src/index.js --ignore __tests__",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest --runInBand"
   },
   "author": "M. Pedroni",
   "license": "ISC",
@@ -21,11 +21,11 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "mongoose": "^5.10.5",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.14",
-    "dotenv": "^8.2.0",
     "factory-girl": "^5.0.4",
     "faker": "^5.1.0",
     "jest": "^26.5.2",

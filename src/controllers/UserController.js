@@ -59,17 +59,14 @@ router.use(require('../middlewares/AuthenticationMiddleware'))
 router.get('/info', async (req, res) => {
     try {
         const user = await User.findById(req.userId)
-        if (!user)
-            return res.status(404).json({message: 'Usuário não encontrado.'})
 
         return res.json(user)
-
     } catch (exception) {
         return res.status(500).json(exception)
     }
 })
 
-router.get('/infoById/:id', async (req, res) => {
+router.get('/findById/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
         if (!user)

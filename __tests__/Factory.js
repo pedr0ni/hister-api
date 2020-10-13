@@ -26,6 +26,7 @@ module.exports = {
     async destroy() {
         console.log('[Factory] Bye...')
         await User.deleteMany({})
+        await Category.deleteMany({})
         await app.disconnect()
         console.log('[Factory] Dead!')
     }

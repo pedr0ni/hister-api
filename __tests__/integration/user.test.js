@@ -1,5 +1,6 @@
 const request = require('supertest')
 const Factory = require('../Factory')
+const Security = require('../../src/services/Security')
 
 describe('User Integration', () => {
 
@@ -13,6 +14,21 @@ describe('User Integration', () => {
 
         expect(response.status).toBe(200)
         expect(response.body.length).toBeGreaterThan(1)
+    })
+
+    it('Should show the user information by Id', async () => {
+        const user = await Factory.getUser()
+
+        const response = await request(Factory.getApp()).get(`/user/findById/${user.id}`).send({})
+
+        expect(response.status).toBe(200)
+        expect(response.body.name).toBe(user.name)
+    })
+
+    it('Shoud return an error with a invalid user id', async () => {
+        const response = await request(Factory.getApp()).get(`/user/findById/5f7bb23a751222d4e0ab1c65`).send({})
+
+        expect(response.status).toBe(404)
     })
 
     afterAll(async () => {

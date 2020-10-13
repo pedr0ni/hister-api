@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
      * Ignores all routes in test environment 
      * (/user/info is the route used for session integration tests)
      */
-    if (process.env.NODE_ENV == 'test' && req.baseUrl.indexOf('test') == -1) {
+    if (process.env.NODE_ENV == 'test' && req.baseUrl.indexOf('test') == -1 && req.baseUrl.indexOf('info') == -1) {
         next()
         return
     }
