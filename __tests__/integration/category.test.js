@@ -1,6 +1,7 @@
 const app = require('../../src/app')
 const faker = require('faker')
 const request = require('supertest')
+const factory = require('../Factory')
 
 describe('Category', () => {
 

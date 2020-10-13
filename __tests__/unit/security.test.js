@@ -17,8 +17,8 @@ describe('Security', () => {
         expect(isAfter).toBeTruthy()
     })
 
-    afterAll(async () => [
+    afterAll(async () => {
         await Factory.dropUsers()
-    ])
+    })
 
 })

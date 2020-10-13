@@ -54,8 +54,8 @@ describe('Authentication', () => {
         expect(response.status).toBe(401)
     })
 
-    afterAll(async () => [
+    afterAll(async () => {
         await app.disconnect()
-    ])
+    })
     
 })
