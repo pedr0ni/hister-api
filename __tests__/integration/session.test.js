@@ -45,6 +45,12 @@ describe('Session', () => {
         expect(response.body.userId).toBe(user.id)
     })
 
+    it('Should authorize a request to a public route without a valid token', async () => {
+        const response = await request(app).get('/test/unlocked').send({})
+
+        expect(response.status).toBe(200)
+    })
+
     afterAll(async () => {
         await app.disconnect()
     })
