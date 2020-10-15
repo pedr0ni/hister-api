@@ -65,6 +65,9 @@ router.post('/', async (req, res) => {
         // Calculate the price
         const totalPrice = await books.reduce((a, b) => a.price + b.price)
 
+        if (user.credit < totalPrice)
+            return res.status(400).json({message: 'Você não possui saldo sucifiente para efetuar esse pedido.'})
+
         // Create the order
         const order = await Order.create({
             user: user.id,

@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs')
 const mongoose = require('../database')
 
-
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -19,6 +18,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         require: true,
         select: false
+    },
+    credit: {
+        type: Number,
+        require: true
     },
     createdAt: {
         type: Date,

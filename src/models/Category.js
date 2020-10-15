@@ -1,6 +1,5 @@
 const mongoose = require('../database')
 
-
 const CategorySchema = new mongoose.Schema({
     index: {
         type: Number,

@@ -1,7 +1,5 @@
 const mongoose = require('../database')
 
-// bookID,title,authors,average_rating,isbn,isbn13,language_code,  num_pages,ratings_count,text_reviews_count,publication_date,publisher
-// 1,Harry Potter and the Half-Blood Prince (Harry Potter  #6),J.K. Rowling/Mary GrandPré,4.57,0439785960,9780439785969,eng,652,2095690,27591,9/16/2006,Scholastic Inc.
 const BookSchema = new mongoose.Schema({
     title: {
         type: String
