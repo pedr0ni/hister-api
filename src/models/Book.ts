@@ -1,4 +1,22 @@
-const mongoose = require('../database')
+import mongoose from '../database'
+import { ICategory } from './Category'
+
+export interface IBook extends mongoose.Document {
+    title: string,
+    authors: string,
+    average_rating: number,
+    isbn: string,
+    isbn13: string,
+    language_code: string,
+    num_pages: number,
+    ratings_count: number,
+    text_reviews_count: number,
+    publication_date: number,
+    publisher: string,
+    price: number,
+    category: ICategory['_id'],
+    createdAt: Date
+}
 
 const BookSchema = new mongoose.Schema({
     title: {
@@ -47,6 +65,4 @@ const BookSchema = new mongoose.Schema({
     }
 })
 
-const Book = mongoose.model('Book', BookSchema, 'Books')
-
-module.exports = Book
+export default mongoose.model<IBook>('Book', BookSchema, 'Books')

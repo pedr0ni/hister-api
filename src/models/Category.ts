@@ -1,4 +1,11 @@
-const mongoose = require('../database')
+import mongoose from '../database'
+
+export interface ICategory extends mongoose.Document {
+    index: number,
+    name: string,
+    image: string,
+    createdAt: Date
+}
 
 const CategorySchema = new mongoose.Schema({
     index: {
@@ -18,6 +25,6 @@ const CategorySchema = new mongoose.Schema({
     }
 })
 
-const Category = mongoose.model('Category', CategorySchema, 'Categories')
+const Category = mongoose.model<ICategory>('Category', CategorySchema, 'Categories')
 
-module.exports = Category
+export default Category

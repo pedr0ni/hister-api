@@ -1,7 +1,7 @@
-const express = require('express')
-const security = require('../services/Security')
-
-const User = require('../models/User')
+import express from 'express'
+import security from '../services/Security'
+import User from '../models/User'
+import AuthenticationMiddleware from '../middlewares/AuthenticationMiddleware'
 
 const router = express.Router()
 
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 router.post('/authenticate', async (req, res) => {
     try {
         const { email, password } = req.body
-
+        
         const user = await User.findOne({ email }).select('+password')
     
         if (!user)
@@ -54,11 +54,11 @@ router.post('/register', async (req, res) => {
     }
 })
 
-router.use(require('../middlewares/AuthenticationMiddleware'))
+router.use(AuthenticationMiddleware)
 
 router.get('/info', async (req, res) => {
     try {
-        const user = await User.findById(req.userId)
+        const user = await User.findById(req.headers.userId)
 
         return res.json(user)
     } catch (exception) {
@@ -79,4 +79,6 @@ router.get('/findById/:id', async (req, res) => {
     }
 })
 
-module.exports = app => app.use('/user', router)
+// module.exports = app => app.use('/user', router)
+
+export default router

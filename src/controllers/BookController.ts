@@ -1,18 +1,21 @@
-const express = require('express')
-const assert = require('assert')
-
-const Book = require('../models/Book')
-const Category = require('../models/Category')
+import express from 'express'
+import Book from '../models/Book'
+import Category from '../models/Category'
+import AuthenticationMiddleware from '../middlewares/AuthenticationMiddleware'
 
 const router = express.Router()
 
-router.use(require('../middlewares/AuthenticationMiddleware'))
+router.use(AuthenticationMiddleware)
 
-router.get('/', async (req, res) => {
+interface IQuery {
+    page: number,
+    search?: string
+}
+
+router.get<any, any, any, IQuery>('/', async (req, res) => {
     try {
         let { page = 0, search } = req.query
 
-        page = parseInt(page)
         const skip = page * 10
     
         const take = 10
@@ -71,12 +74,11 @@ router.get('/:bookId', async (req, res) => {
     }
 })
 
-router.get('/category/:category', async (req, res) => {
+router.get<any, any, any, IQuery>('/category/:category', async (req, res) => {
     try {
         let { page = 0 } = req.query
         const category = await Category.findById(req.params.category)
 
-        page = parseInt(page)
         const skip = page * 10
         let totalResults = await Book.find({category}).countDocuments()
         const pages = Math.floor(totalResults / 10)
@@ -116,4 +118,4 @@ router.delete('/:bookId', async (req, res) => {
     }
 })
 
-module.exports = app => app.use('/book', router)
+export default router

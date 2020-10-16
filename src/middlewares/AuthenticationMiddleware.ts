@@ -1,9 +1,8 @@
-const security = require('../services/Security')
+import { NextFunction, Request, Response } from "express"
 
-console.log('Auth middleware is loaded')
+import security from '../services/Security'
 
-module.exports = async (req, res, next) => {
-
+export default async (req: Request, res: Response, next: NextFunction) => {
     /**
      * Ignores all routes in test environment 
      * (/user/info is the route used for session integration tests)
@@ -33,10 +32,14 @@ module.exports = async (req, res, next) => {
         const parsedToken = await security.validateJwt(token)
 
         if (parsedToken) {
-            req.userId = parsedToken.userId
+            req.headers = {
+                ...req.headers,
+                userId: parsedToken.userId
+            }
             return next()
         }
     } catch (exception) {
+        console.error(exception)
         return res.status(401).json({ message: 'The provided token is invalid or it already expired.'})
     }
 }
