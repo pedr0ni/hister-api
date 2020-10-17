@@ -1,6 +1,6 @@
-const request = require('supertest')
-const Security = require("../../src/services/Security")
-const Factory = require('../Factory')
+import Factory from '../../src/Factory'
+import Security from '../../src/services/Security'
+import request from 'supertest'
 
 describe('Session', () => {
 

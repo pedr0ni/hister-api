@@ -1,11 +1,10 @@
-const Factory = require('../Factory')
-const faker = require('faker')
-const request = require('supertest')
+import Factory from '../../src/Factory'
+import faker from 'faker'
+import request from 'supertest'
 
 describe('Authentication', () => {
 
     it('Should be able to register a new user', async () => {
-      
         const response = await request(Factory.getApp()).post('/user/register').send({
             name: faker.name.findName(),
             email: faker.internet.email(),
@@ -36,14 +35,10 @@ describe('Authentication', () => {
             password
         })
 
-        console.log(user, password)
-
         const response = await request(Factory.getApp()).post('/user/authenticate').send({
             email: user.email,
             password
         })
-
-        console.log(response.body)
 
         expect(response.status).toBe(200)
     })

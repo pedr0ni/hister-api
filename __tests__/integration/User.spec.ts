@@ -1,6 +1,6 @@
-const request = require('supertest')
-const Factory = require('../Factory')
-const Security = require('../../src/services/Security')
+import request from 'supertest'
+import Factory from '../../src/Factory'
+import Security from '../../src/services/Security'
 
 describe('User Integration', () => {
 

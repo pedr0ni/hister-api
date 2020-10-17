@@ -1,12 +1,13 @@
-const express = require('express')
-const mongoose = require('../database')
-const Order = require('../models/Order')
-const User = require('../models/User')
-const Book = require('../models/Book')
+import express from 'express'
+import mongoose from '../database'
+import Order, { IOrderBook } from '../models/Order'
+import User from '../models/User'
+import Book, { IBook } from '../models/Book'
+import AuthenticationMiddleware from '../middlewares/AuthenticationMiddleware'
 
 const router = express.Router()
 
-router.use(require('../middlewares/AuthenticationMiddleware'))
+router.use(AuthenticationMiddleware)
 
 /**
  * List all Orders
@@ -31,8 +32,8 @@ router.get('/', async (req, res) => {
  */
 router.post('/', async (req, res) => {
     try {
-        const user = await User.findById(req.userId)
-        let books = req.body
+        const user = await User.findById(req.headers.userId)
+        let books: Array<IBook> = req.body
 
         const message = 'Você não pode postar um pedido sem nenhum livro.'
 
@@ -54,7 +55,7 @@ router.post('/', async (req, res) => {
         })
 
         // Map books to price, title and id
-        booksFiltered = await books.map(entry => {
+        let booksArray: Array<IOrderBook> = await books.map(entry => {
             return {
                 _id: mongoose.Types.ObjectId(entry._id),
                 title: entry.title,
@@ -63,7 +64,8 @@ router.post('/', async (req, res) => {
         })
         
         // Calculate the price
-        const totalPrice = booksFiltered.length > 1 ? await booksFiltered.reduce((a, b) => a.price + b.price) : booksFiltered[0].price
+        const priceArray = booksArray.map(entry => entry.price)
+        const totalPrice = booksArray.length > 1 ? priceArray.reduce((a, b) => a + b) : booksArray[0].price
 
         if (user.credit < totalPrice)
             return res.status(400).json({message: 'Você não possui saldo sucifiente para efetuar esse pedido.'})
@@ -71,7 +73,7 @@ router.post('/', async (req, res) => {
         // Create the order
         const order = await Order.create({
             user: user.id,
-            books: booksFiltered,
+            books: booksArray,
             totalPrice,
             status: "PENDING"
         })
@@ -116,4 +118,6 @@ router.put('/', async (req, res) => {
     }
 })
 
-module.exports = app => app.use('/order', router)
+// module.exports = app => app.use('/order', router)
+
+export default router

@@ -1,10 +1,10 @@
-const express = require('express')
-
-const Category = require('../models/Category')
+import express from 'express'
+import Category from '../models/Category'
+import AuthenticationMiddleware from '../middlewares/AuthenticationMiddleware'
 
 const router = express.Router()
 
-router.use(require('../middlewares/AuthenticationMiddleware'))
+router.use(AuthenticationMiddleware)
 
 router.get('/', async (req, res) => {
     const categories = await Category.find()
@@ -18,4 +18,6 @@ router.post('/', async (req, res) => {
     return res.json(category)
 })
 
-module.exports = app => app.use('/category', router)
+// module.exports = app => app.use('/category', router)
+
+export default router

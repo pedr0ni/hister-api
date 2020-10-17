@@ -1,5 +1,14 @@
-const bcrypt = require('bcryptjs')
-const mongoose = require('../database')
+import mongoose from '../database'
+import bcrypt from 'bcrypt'
+
+export interface IUser extends mongoose.Document {
+    name: string,
+    email: string,
+    birth: string,
+    password: string,
+    credit: number,
+    createdAt?: Date
+}
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -29,13 +38,11 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
-UserSchema.pre('save', async function(next) {
+UserSchema.pre<IUser>('save', async function(next) {
     const hash = await bcrypt.hash(this.password, 10)
     this.password = hash
 
     next()
 })
 
-const User = mongoose.model('User', UserSchema, 'Users')
-
-module.exports = User
+export default mongoose.model<IUser>('User', UserSchema, 'Users')

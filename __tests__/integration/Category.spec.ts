@@ -1,6 +1,6 @@
-const faker = require('faker')
-const request = require('supertest')
-const Factory = require('../Factory')
+import faker from 'faker'
+import request from 'supertest'
+import Factory from '../../src/Factory'
 
 describe('Category', () => {
 
