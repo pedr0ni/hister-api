@@ -42,7 +42,7 @@ export default {
 
     randomString: (length: number) => {
         let generated = '';
-        for (let i = 0; i < length; i++) {
+        while (generated.length != length) {
             generated += alphabet.charAt(randomInteger(0, alphabet.length))
         }
         return generated
