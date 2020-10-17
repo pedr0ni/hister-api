@@ -1,12 +1,16 @@
 import { Application } from 'express'
 import fs from 'fs'
 import path from 'path'
+import environment from '../environment'
+
+environment.load()
 
 export default {
     async load(app: Application) {
         let files = fs.readdirSync(path.join(__dirname, '../controllers'))
 
-        files = files.filter(file => file.endsWith('.js'))
+        if (process.env.NODE_ENV != 'test')
+            files = files.filter(file => file.endsWith('.js'))
 
         await files.forEach(entry => {
             const filePath = path.join(__dirname, `../controllers/${entry}`)
