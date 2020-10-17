@@ -7,7 +7,7 @@ export interface IUser extends mongoose.Document {
     birth: string,
     password: string,
     credit: number,
-    createdAt: Date
+    createdAt?: Date
 }
 
 const UserSchema = new mongoose.Schema({

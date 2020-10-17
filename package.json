@@ -28,9 +28,13 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "mongoose": "^5.10.5",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "ts-jest": "^26.4.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.1",
+    "@types/faker": "^5.1.2",
     "@types/jest": "^26.0.14",
     "factory-girl": "^5.0.4",
     "faker": "^5.1.0",

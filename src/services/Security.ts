@@ -44,7 +44,6 @@ export default {
         let generated = '';
         for (let i = 0; i < length; i++) {
             generated += alphabet.charAt(randomInteger(0, alphabet.length))
-            console.log(generated)
         }
         return generated
     },

@@ -1,4 +1,4 @@
-const Factory = require('../Factory')
+import Factory from '../../src/Factory'
 
 describe('User', () => {
 
