@@ -4,7 +4,9 @@ import path from 'path'
 
 export default {
     async load(app: Application) {
-        const files = fs.readdirSync(path.join(__dirname, '../controllers'))
+        let files = fs.readdirSync(path.join(__dirname, '../controllers'))
+
+        files = files.filter(file => file.endsWith('.js'))
 
         await files.forEach(entry => {
             const filePath = path.join(__dirname, `../controllers/${entry}`)
