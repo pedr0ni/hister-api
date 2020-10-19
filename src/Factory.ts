@@ -11,17 +11,13 @@ export interface IUserParms {
 }
 
 export default {
-    async drop() {
-        await User.deleteMany({})
-        await Category.deleteMany({})
-    },
     async getUser(params: IUserParms = {}) {
         return await User.create({
             name: params.name ? params.name : faker.name.findName(),
             email: params.email ? params.email : faker.internet.email(),
             birth: params.birth ? params.birth : faker.date.past().toString(),
             password: params.password ? params.password : faker.internet.password(),
-            credit: Math.random() * 500
+            credit: (Math.random() * 500).toFixed(2)
         })
     },
     getApp() {

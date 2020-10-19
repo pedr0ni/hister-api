@@ -6,13 +6,13 @@ import environment from '../environment'
 environment.load()
 
 export default {
-    async load(app: Application) {
+    load(app: Application) {
         let files = fs.readdirSync(path.join(__dirname, '../controllers'))
 
         if (process.env.NODE_ENV != 'test')
             files = files.filter(file => file.endsWith('.js'))
 
-        await files.forEach(entry => {
+        files.forEach(entry => {
             const filePath = path.join(__dirname, `../controllers/${entry}`)
             const routerPath = entry.substring(0, entry.indexOf('Controller')).toLowerCase()
 

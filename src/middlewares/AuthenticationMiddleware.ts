@@ -27,7 +27,6 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     if (!/^Bearer$/i.test(scheme))
         return res.status(401).json({ message: 'Malformed bearer token.'})
 
-    
     try {
         const parsedToken = await security.validateJwt(token)
 
