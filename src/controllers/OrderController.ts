@@ -82,6 +82,14 @@ router.post('/', async (req, res) => {
             ? 'Alguns livros foram removidos do carrinho pois não foram encontrados no sistema' 
             : 'Pedido realizado com sucesso!'
 
+        await User.updateOne({
+            _id: user.id
+        }, {
+            $set: {
+                credit: user.credit - totalPrice
+            }
+        })
+
         return res.json({order, message: removedMessage})
     } catch (exception) {
         return res.status(500).json(exception)
