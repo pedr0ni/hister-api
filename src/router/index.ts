@@ -9,8 +9,8 @@ export default {
     load(app: Application) {
         let files = fs.readdirSync(path.join(__dirname, '../controllers'))
 
-        if (process.env.NODE_ENV != 'test')
-            files = files.filter(file => file.endsWith('.js'))
+        //if (process.env.NODE_ENV != 'test')
+            //files = files.filter(file => file.endsWith('.js'))
 
         files.forEach(entry => {
             const filePath = path.join(__dirname, `../controllers/${entry}`)

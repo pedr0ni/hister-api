@@ -1,5 +1,6 @@
 import mongoose from '../database'
 import bcrypt from 'bcrypt'
+import { IOrderBook } from './Order'
 
 export interface IUser extends mongoose.Document {
     name: string,
@@ -7,6 +8,8 @@ export interface IUser extends mongoose.Document {
     birth: string,
     password: string,
     credit: number,
+    toOrderBook(): IOrderBook
+    cart: Array<IOrderBook>
     createdAt?: Date
 }
 
@@ -31,6 +34,10 @@ const UserSchema = new mongoose.Schema({
     credit: {
         type: Number,
         require: true
+    },
+    cart: {
+        type: Array,
+        require: false
     },
     createdAt: {
         type: Date,

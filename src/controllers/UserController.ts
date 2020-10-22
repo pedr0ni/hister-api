@@ -2,6 +2,8 @@ import express from 'express'
 import security from '../services/Security'
 import User from '../models/User'
 import AuthenticationMiddleware from '../middlewares/AuthenticationMiddleware'
+import { IBook } from '../models/Book'
+import BookService from '../services/BookService'
 
 const router = express.Router()
 
@@ -55,6 +57,64 @@ router.post('/register', async (req, res) => {
 })
 
 router.use(AuthenticationMiddleware)
+
+router.get('/cart', async (req, res) => {
+    try {
+        const user = await User.findById(req.headers.userId)
+
+        return res.json(user.cart)
+    } catch (exception) {
+        console.error(exception)
+        return res.status(500).json(exception)
+    }
+})
+
+router.post('/cart', async (req, res) => {
+    try {
+        const book: IBook = req.body
+        const user = await User.findById(req.headers.userId)
+
+        user.cart.push(BookService.toOrderBook(book))
+
+        console.log(user.cart)
+
+        await User.updateOne({
+            _id: user.id
+        }, {
+            $set: {
+                cart: user.cart
+            }
+        })
+
+        return res.json(user.cart)
+    } catch (exception) {
+        return res.status(500).json(exception)
+    }
+})
+
+router.delete('/cart', async (req, res) => {
+    try {
+        const book: IBook = req.body
+        const user = await User.findById(req.headers.userId)
+
+        if (user.cart.some(b => b._id == book._id)) {
+
+            user.cart = user.cart.filter(b => b._id != book._id)
+
+            await User.updateOne({
+                _id: user.id
+            }, {
+                $set: {
+                    cart: user.cart
+                }
+            })
+        }
+
+        return res.json(user.cart)
+    } catch (exception) {
+        return res.status(500).json(exception)
+    }
+})
 
 router.get('/info', async (req, res) => {
     try {
