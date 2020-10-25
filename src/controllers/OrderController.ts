@@ -4,6 +4,7 @@ import Order, { IOrderBook } from '../models/Order'
 import User from '../models/User'
 import Book, { IBook } from '../models/Book'
 import AuthenticationMiddleware from '../middlewares/AuthenticationMiddleware'
+import BookService from '../services/BookService'
 
 const router = express.Router()
 
@@ -55,13 +56,7 @@ router.post('/', async (req, res) => {
         })
 
         // Map books to price, title and id
-        let booksArray: Array<IOrderBook> = await books.map(entry => {
-            return {
-                _id: mongoose.Types.ObjectId(entry._id),
-                title: entry.title,
-                price: entry.price
-            }
-        })
+        let booksArray: Array<IOrderBook> = BookService.toOrderBookArray(booksFiltered)
         
         // Calculate the price
         const priceArray = booksArray.map(entry => entry.price)

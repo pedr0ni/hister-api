@@ -5,6 +5,8 @@ import { IUser } from './User'
 export interface IOrderBook {
     _id: IBook['_id']
     title: string,
+    authors: string,
+    publisher: string,
     price: number
 }
 

@@ -97,6 +97,8 @@ router.delete('/cart', async (req, res) => {
         const book: IBook = req.body
         const user = await User.findById(req.headers.userId)
 
+        console.log('should remove', book)
+
         if (user.cart.some(b => b._id == book._id)) {
 
             user.cart = user.cart.filter(b => b._id != book._id)
