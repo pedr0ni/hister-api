@@ -15,7 +15,7 @@ export interface IBook extends mongoose.Document {
     publisher: string,
     price: number,
     category: ICategory['_id'],
-    createdAt: Date
+    createdAt?: Date
 }
 
 const BookSchema = new mongoose.Schema({
