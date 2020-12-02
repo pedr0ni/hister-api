@@ -92,6 +92,26 @@ router.post('/cart', async (req, res) => {
     }
 })
 
+// Clear user cart
+router.patch('/cart', async (req, res) => {
+    try {
+        const user = await User.findById(req.headers.userId)
+
+        await User.updateOne({
+            _id: user.id
+        }, {
+            $set: {
+                cart: []
+            }
+        })
+
+        return res.json(user.cart)
+
+    } catch (exception) {
+        return res.status(500).json(exception)
+    }
+})
+
 router.delete('/cart', async (req, res) => {
     try {
         const book: IBook = req.body
