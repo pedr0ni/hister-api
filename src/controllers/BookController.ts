@@ -12,6 +12,7 @@ interface IQuery {
     search?: string
 }
 
+// Metodo que lista todos os livros (GET /book)
 router.get<any, any, any, IQuery>('/', async (req, res) => {
     try {
         let { page = 0, search } = req.query
@@ -42,6 +43,7 @@ router.get<any, any, any, IQuery>('/', async (req, res) => {
     }
 })
 
+// Metodo pra adicionar um livro (POST /book)
 router.post('/', async (req, res) => {
     try {
         const book = await Book.create(req.body)
@@ -52,6 +54,7 @@ router.post('/', async (req, res) => {
     }
 })
 
+// Metodo para listar informacoes de um livro por id (GET /book/bookId)
 router.get('/:bookId', async (req, res) => {
     try {
         const { bookId } = req.params
@@ -74,6 +77,7 @@ router.get('/:bookId', async (req, res) => {
     }
 })
 
+// Metodo para listar todos os livros de uma determinada categoria (GET /book/category/:category)
 router.get<any, any, any, IQuery>('/category/:category', async (req, res) => {
     try {
         let { page = 0 } = req.query
@@ -101,6 +105,7 @@ router.get<any, any, any, IQuery>('/category/:category', async (req, res) => {
     }
 })
 
+// Metodo para remover um livro por id
 router.delete('/:bookId', async (req, res) => {
     try {
         const { bookId } = req.params

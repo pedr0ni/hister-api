@@ -8,6 +8,7 @@ const router = express.Router()
 
 router.use(AuthenticationMiddleware)
 
+// Metodo para trazer as informacoes da home
 router.get('/', async (req, res) => {
     try {
 

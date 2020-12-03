@@ -11,6 +11,7 @@ const router = express.Router()
 router.use(AuthenticationMiddleware)
 
 /**
+ * Metodo para listar todos pedidos (GET /order)
  * List all Orders
  * Return 200 with an Array of Order
  * Return 500 if exception
@@ -26,6 +27,7 @@ router.get('/', async (req, res) => {
 })
 
 /**
+ * Metodo para postar um pedido
  * Post an Order
  * Return 200 with a Order
  * Return 500 if exception
@@ -92,6 +94,7 @@ router.post('/', async (req, res) => {
 })
 
 /**
+ * Metodo para atualizar as infos de um pedido
  * Update an order
  * Return 200 if success
  * Return 500 if exception

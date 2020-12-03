@@ -7,6 +7,7 @@ import BookService from '../services/BookService'
 
 const router = express.Router()
 
+// Metodo para listar os usuarios (GET /user)
 router.get('/', async (req, res) => {
     try {
        const users = await User.find({})
@@ -17,6 +18,7 @@ router.get('/', async (req, res) => {
     }
 })
 
+// Metodo para autenticar um usuario (POST /user/authenticate)
 router.post('/authenticate', async (req, res) => {
     try {
         const { email, password } = req.body
@@ -39,6 +41,7 @@ router.post('/authenticate', async (req, res) => {
     }
 })
 
+// Metodo para registar um usuario (POST /user/register)
 router.post('/register', async (req, res) => {
     try {
         const { email } = req.body
@@ -58,6 +61,7 @@ router.post('/register', async (req, res) => {
 
 router.use(AuthenticationMiddleware)
 
+// Metodo para listar o carrinho do usuario (GEt /user/cart)
 router.get('/cart', async (req, res) => {
     try {
         const user = await User.findById(req.headers.userId)
@@ -69,6 +73,7 @@ router.get('/cart', async (req, res) => {
     }
 })
 
+// Metodo para adicionar um livro ao carrinho do usuario (POST /user/cart)
 router.post('/cart', async (req, res) => {
     try {
         const book: IBook = req.body
@@ -92,7 +97,7 @@ router.post('/cart', async (req, res) => {
     }
 })
 
-// Clear user cart
+// Metodo para limpar o carrinho do usuario (PATCH /user/cart)
 router.patch('/cart', async (req, res) => {
     try {
         const user = await User.findById(req.headers.userId)
@@ -112,6 +117,7 @@ router.patch('/cart', async (req, res) => {
     }
 })
 
+// Metodo para deletar um livro do carrinho do usuario (DELETE /user/cart)
 router.delete('/cart', async (req, res) => {
     try {
         const book: IBook = req.body
@@ -146,6 +152,7 @@ router.get('/info', async (req, res) => {
     }
 })
 
+// Metodo para listar as informacoes de usuario por id (GET /user/findById/:id)
 router.get('/findById/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
